@@ -28,7 +28,7 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
 
 
 
-class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):    #CBV로 생성
+class PostCreate(LoginRequiredMixin, CreateView):    #CBV로 생성
     model = Post
     fields = ['title', 'content','head_image','file_upload','category','tag']
 
@@ -36,7 +36,7 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):    #CBV�
         return self.request.user.is_superuser or self.request.user.is_staff
 
     def form_valid(self, form):
-        if self.request.user.is_authenticated and (self.request.user.is_superuser or self.request.user.is_staff):
+        if self.request.user.is_authenticated: #and (self.request.user.is_superuser or self.request.user.is_staff):
             form.instance.author = self.request.user
             return super(PostCreate, self).form_valid(form)
         else:
